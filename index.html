@@ -1225,18 +1225,18 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   flex-shrink: 0;
   background: #111;
   border-bottom: 1px solid rgba(212,175,55,0.2);
-  padding: 10px 14px 8px;
+  padding: clamp(8px, 1.5vw, 16px) clamp(10px, 2vw, 20px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   direction: rtl;
   z-index: 2;
 }
-.dr-header-right, .dr-header-left { min-width: 60px; }
+.dr-header-right, .dr-header-left { min-width: clamp(50px, 10vw, 80px); }
 .dr-header-left { display: flex; justify-content: flex-end; }
 .dr-header-center { flex: 1; text-align: center; }
 .dr-surah-name {
-  font-size: 17px;
+  font-size: clamp(14px, 2.5vw, 24px);
   font-weight: 800;
   color: #fff;
   font-family: 'Cairo', sans-serif;
@@ -1247,9 +1247,9 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
   font-family: 'Cairo', sans-serif;
-  font-size: 12px;
+  font-size: clamp(10px, 1.8vw, 16px);
   font-weight: 700;
-  padding: 5px 11px;
+  padding: clamp(4px, 0.8vw, 8px) clamp(8px, 1.5vw, 16px);
   border-radius: 18px;
   cursor: pointer;
   white-space: nowrap;
@@ -1258,9 +1258,9 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
   color: rgba(255,255,255,0.6);
-  font-size: 13px;
+  font-size: clamp(11px, 2vw, 18px);
   font-weight: 700;
-  width: 30px; height: 30px;
+  width: clamp(26px, 4.5vw, 44px); height: clamp(26px, 4.5vw, 44px);
   border-radius: 50%;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -1288,18 +1288,18 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   background: rgba(212,175,55,0.12);
   border: 1px solid rgba(212,175,55,0.4);
   border-radius: 18px;
-  padding: 2px 9px 2px 7px;
+  padding: clamp(2px, 0.4vw, 5px) clamp(7px, 1.5vw, 14px) clamp(2px, 0.4vw, 5px) clamp(5px, 1vw, 10px);
   animation: badgePop 0.45s cubic-bezier(0.34,1.56,0.64,1) both,
              goldGlow 3s 1.5s ease-in-out infinite;
 }
 .dr-badge-label {
-  font-size: 10px;
+  font-size: clamp(9px, 1.5vw, 14px);
   color: rgba(212,175,55,0.65);
   font-weight: 700;
   font-family: 'Cairo', sans-serif;
 }
 .dr-badge-val {
-  font-size: 13px;
+  font-size: clamp(12px, 2vw, 20px);
   color: #f0cc55;
   font-weight: 900;
   font-family: 'Cairo', sans-serif;
@@ -1353,30 +1353,30 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   flex: 1;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 14px;
+  border-radius: clamp(10px, 2vw, 18px);
   color: #fff;
   font-family: 'Cairo', sans-serif;
-  font-size: 16px;
+  font-size: clamp(13px, 2.2vw, 20px);
   font-weight: 800;
-  padding: 11px 0;
+  padding: clamp(8px, 1.5vw, 16px) 0;
   cursor: pointer;
   transition: background 0.15s, transform 0.1s;
 }
 .dr-nav-btn:active { background: rgba(212,175,55,0.15); transform: scale(0.95); }
-.dr-nav-center { text-align: center; min-width: 55px; }
-.dr-nav-num { color: #d4af37; font-size: 16px; font-weight: 800; font-family: 'Cairo', sans-serif; }
-.dr-nav-of { color: rgba(255,255,255,0.3); font-size: 9px; font-weight: 600; margin-top: 1px; font-family: 'Cairo', sans-serif; }
+.dr-nav-center { text-align: center; min-width: clamp(45px, 8vw, 80px); }
+.dr-nav-num { color: #d4af37; font-size: clamp(13px, 2.2vw, 20px); font-weight: 800; font-family: 'Cairo', sans-serif; }
+.dr-nav-of { color: rgba(255,255,255,0.3); font-size: clamp(8px, 1.2vw, 12px); font-weight: 600; margin-top: 1px; font-family: 'Cairo', sans-serif; }
 
 /* ── نص الآيات — تدفق متصل زي المصحف الحقيقي ── */
 #ayahContainer {
-  padding: 20px 16px 40px 16px;
+  padding: clamp(14px, 2.5vw, 30px) clamp(12px, 2.5vw, 28px) clamp(30px, 5vw, 60px);
   direction: rtl;
 }
 
 /* النص المتدفق — الآيات متصلة مع بعض */
 .ayah-page-text {
   font-family: 'Cairo', sans-serif;
-  font-size: 23px;
+  font-size: clamp(18px, 3vw, 34px);
   font-weight: 600;
   line-height: 2.6;
   color: #f0ead8;
@@ -1391,13 +1391,13 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: clamp(20px, 3.5vw, 36px);
+  height: clamp(20px, 3.5vw, 36px);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(212,175,55,0.22) 0%, rgba(212,175,55,0.06) 100%);
   border: 1.5px solid rgba(212,175,55,0.65);
   color: #f0cc55;
-  font-size: 9px;
+  font-size: clamp(8px, 1.2vw, 13px);
   font-weight: 900;
   margin: 0 5px;
   vertical-align: middle;
@@ -1438,24 +1438,18 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
 .surah-header-diamond { display: flex; gap: 3px; align-items: center; }
 .surah-header-diamond span { width: 5px; height: 5px; background: #d4af37; border-radius: 1px; transform: rotate(45deg); }
 .surah-header-diamond span:nth-child(2) { width: 7px; height: 7px; }
-.surah-header-name { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 2px; }
-.surah-header-meta { font-size: 11px; color: #d4af37; font-weight: 700; margin-top: 4px; }
-.surah-header-border-bottom { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
-.surah-header-border-bottom::before,
-.surah-header-border-bottom::after {
-  content: ''; flex: 1; height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent);
-}
+.surah-header-name { font-size: clamp(18px, 3.5vw, 32px); font-weight: 800; color: #fff; letter-spacing: 2px; }
+.surah-header-meta { font-size: clamp(10px, 1.8vw, 16px); color: #d4af37; font-weight: 700; margin-top: 4px; }
 .surah-header-dot { width: 4px; height: 4px; background: #d4af37; border-radius: 50%; }
 
 /* ── البسملة ── */
 .basmala-block {
   text-align: center;
   font-family: 'Cairo', sans-serif;
-  font-size: 22px;
+  font-size: clamp(18px, 3vw, 30px);
   font-weight: 700;
   color: #d4af37;
-  padding: 14px 10px 12px;
+  padding: clamp(10px, 2vw, 20px) 10px clamp(8px, 1.5vw, 16px);
   margin-bottom: 12px;
   line-height: 2;
   position: relative;
@@ -2254,13 +2248,13 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
       <div class="widget mushaf-widget" style="cursor:pointer;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <div class="widget-icon" style="margin-bottom:0;color:#a8cdb5;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6V20"/><path d="M12 6C12 6 9 4 4 4v14c0 0 4 0 8 2"/><path d="M12 6c0 0 3-2 8-2v14c0 0-4 0-8 2"/><path d="M6 8.5h4"/><path d="M6 11.5h4"/><path d="M6 14.5h3"/><path d="M14 8.5h4"/><path d="M14 11.5h4"/><path d="M14 14.5h3"/></svg></div>
-          <div onclick="openMushaf()" style="color:rgba(255,255,255,0.6);font-size:22px;padding-right:2px;">←</div>
+          <div onclick="openMushaf()" style="color:rgba(255,255,255,0.6);font-size:clamp(16px,2.8vw,26px);padding-right:2px;">←</div>
         </div>
         <div class="mushaf-info" onclick="openMushaf()">
           <div class="widget-title">المصحف الشريف</div>
           <div class="widget-value" id="mushafSurahWidget">سورة الفاتحة</div>
           <div class="widget-sub" id="mushafAyahWidget">الآية ١</div>
-          <div id="mushafJuzWidget" style="margin-top:4px;font-size:10px;font-weight:700;color:#d4af37;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.3);border-radius:10px;padding:2px 8px;display:inline-block;">الجزء ١</div>
+          <div id="mushafJuzWidget" style="margin-top:4px;font-size:clamp(9px,1.5vw,14px);font-weight:700;color:#d4af37;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.3);border-radius:10px;padding:2px 8px;display:inline-block;">الجزء ١</div>
         </div>
 
       </div>
