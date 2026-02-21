@@ -1414,6 +1414,14 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(212,175,55,0.1) 100%);
   box-shadow: 0 0 10px rgba(212,175,55,0.4);
 }
+.ayah-num-inline.selected-ayah {
+  background: radial-gradient(circle, rgba(212,175,55,0.85) 0%, rgba(212,175,55,0.5) 100%) !important;
+  border-color: #f0cc55 !important;
+  color: #1a1a00 !important;
+  box-shadow: 0 0 14px rgba(212,175,55,0.7), 0 0 0 3px rgba(212,175,55,0.25) !important;
+  text-shadow: none !important;
+  transform: scale(1.15);
+}
 
 /* حارس مخفي لتتبع موقع الآية في الـ scroll */
 .ayah-anchor {
@@ -3885,7 +3893,8 @@ function renderAyahText(verses, surah, savedAyah) {
     // نص الآية
     flowHtml += `<span class="ayah-span" data-ayah="${v.num}">${v.text}</span>`;
     // رقم الآية داخل النص — دايرة ذهبية بعد الآية
-    flowHtml += `<span class="ayah-num-inline" onclick="onAyahNumClick(${v.num})" title="الآية ${toArNum(v.num)}">${toArNum(v.num)}</span>`;
+    const isSelected = v.num === mushafCurrentAyah;
+    flowHtml += `<span class="ayah-num-inline${isSelected ? ' selected-ayah' : ''}" data-ayah="${v.num}" onclick="onAyahNumClick(${v.num})" title="الآية ${toArNum(v.num)}">${toArNum(v.num)}</span>`;
     flowHtml += ' '; // مسافة بين الآيات
   });
   flowHtml += '</div>';
@@ -3935,7 +3944,18 @@ function onAyahNumClick(ayahNum) {
   LS.set('mushafAyah', ayahNum);
   updateWidgetDisplay();
   updateInfoBar(mushafCurrentSurah, ayahNum);
-  // وميض خفيف على الآية المضغوطة
+
+  // أزل التحديد من كل الدوايرة الأخرى
+  document.querySelectorAll('.ayah-num-inline.selected-ayah').forEach(el => {
+    el.classList.remove('selected-ayah');
+  });
+
+  // حدد الدايرة المضغوطة
+  document.querySelectorAll(`.ayah-num-inline[data-ayah="${ayahNum}"]`).forEach(el => {
+    el.classList.add('selected-ayah');
+  });
+
+  // وميض على نص الآية
   const span = document.querySelector(`.ayah-span[data-ayah="${ayahNum}"]`);
   if (span) {
     span.style.transition = 'background 0.3s ease';
