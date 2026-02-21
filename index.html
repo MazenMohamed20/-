@@ -327,38 +327,23 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
+  min-height: 100dvh;
   font-family: 'Cairo', sans-serif;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Desktop: show phone mockup */
-@media (min-width: 480px) {
-  body {
-    background: #0d0d0d;
-    padding: 20px 0;
-  }
-  .phone {
-    width: 375px;
-    border-radius: 44px;
-    min-height: 812px;
-  }
-  .top-label { display: block; }
+.phone {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  border-radius: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Mobile: full screen, no phone shell */
-@media (max-width: 479px) {
-  body {
-    padding: 0;
-  }
-  .phone {
-    width: 100%;
-    border-radius: 0;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-  }
-  .top-label { display: none; }
-}
+.top-label { display: none; }
 
 .phone {
   background: #ede9e0;
@@ -1846,8 +1831,28 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
 /* ─── mushaf-overlay-header kept for legacy ─── */
 .mushaf-overlay-title { font-size: 17px; font-weight: 800; color: #fff; }
 
+/* Inner pages + mushaf — fixed to full viewport on all devices */
+.inner-page {
+  border-radius: 0 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  height: 100dvh !important;
+  width: 100vw !important;
+  z-index: 10;
+}
+#mushafOverlay {
+  border-radius: 0 !important;
+  position: fixed !important;
+  inset: 0 !important;
+  height: 100dvh !important;
+  width: 100vw !important;
+}
+
 /* ===== MOBILE RESPONSIVE FIXES ===== */
-@media (max-width: 479px) {
+@media (max-width: 599px) {
 
   /* Make body scroll properly on mobile */
   body {
@@ -1989,26 +1994,6 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
     border-radius: 12px;
   }
 
-  /* Inner pages — fixed to viewport so header + footer always visible */
-  .inner-page {
-    border-radius: 0;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    height: 100dvh !important;
-    width: 100vw !important;
-  }
-
-  /* Wird tracker and reader fill height properly */
-  #wirdTrackerView,
-  #wirdReaderView {
-    height: 100% !important;
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-  }
-
   /* Azkar scrollable content areas */
   .azkar-reader-area {
     flex: 1 1 0 !important;
@@ -2039,19 +2024,6 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   .azkar-tap-big {
     padding: 15px !important;
     font-size: 16px !important;
-  }
-
-  /* Mushaf overlay — fixed to viewport so header + nav always visible */
-  #mushafOverlay {
-    border-radius: 0;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    height: 100dvh !important;
-    width: 100vw !important;
-    inset: 0 !important;
   }
 
   /* Reader view — explicit flex column filling overlay */
@@ -2109,7 +2081,38 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   }
 }
 
-/* Extra small screens (< 360px) */
+
+/* ===== TABLET (600px – 1023px) ===== */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .header-card { padding: 20px 22px 22px; margin: 0 14px 10px; }
+  #timeDigits  { font-size: clamp(48px, 8vw, 64px) !important; }
+  .hijri-date  { font-size: clamp(17px, 2.5vw, 20px); }
+  .prayer-label    { font-size: clamp(10px, 1.5vw, 12px); }
+  .prayer-time-val { font-size: clamp(11px, 1.8vw, 14px); }
+  .widget      { padding: 14px 12px 12px; }
+  .widget-value{ font-size: clamp(18px, 3vw, 24px); }
+  .widget-label{ font-size: clamp(10px, 1.5vw, 12px); }
+  .content-card{ padding: 12px 10px; }
+  .azkar-text  { font-size: clamp(18px, 3vw, 24px); line-height: 2; }
+}
+
+/* ===== DESKTOP (1024px+) ===== */
+@media (min-width: 1024px) {
+  .header-card { padding: 24px 28px 26px; margin: 0 18px 12px; border-radius: 28px; }
+  #timeDigits  { font-size: clamp(56px, 6vw, 80px) !important; }
+  .hijri-date  { font-size: clamp(18px, 1.8vw, 22px); }
+  .prayer-label    { font-size: clamp(11px, 1.1vw, 13px); }
+  .prayer-time-val { font-size: clamp(12px, 1.3vw, 15px); }
+  .widget      { padding: 16px 14px 14px; border-radius: 18px; }
+  .widget-value{ font-size: clamp(20px, 2.2vw, 28px); }
+  .widget-label{ font-size: clamp(10px, 1.1vw, 13px); }
+  .content-card{ padding: 14px 12px; gap: 10px; }
+  .azkar-text  { font-size: clamp(20px, 2.2vw, 28px); line-height: 2.1; }
+  .azkar-page-title { font-size: clamp(17px, 1.8vw, 22px); }
+  .azkar-next-btn   { font-size: clamp(15px, 1.5vw, 18px); padding: 16px; }
+}
+
+/* Extra small screens */
 @media (max-width: 359px) {
   .hijri-date { font-size: 15px; }
   #timeDigits { font-size: 32px !important; }
