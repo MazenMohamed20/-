@@ -321,16 +321,105 @@ const LS = {
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; tap-highlight-color: transparent; }
 
+body {
+  background: #ede9e0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  font-family: 'Cairo', sans-serif;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Desktop: show phone mockup */
+@media (min-width: 480px) {
+  body {
+    background: #0d0d0d;
+    padding: 20px 0;
+    align-items: flex-start;
+  }
+  .phone {
+    /* يتكيف مع حجم الشاشة — أصغر من 480px يكون full screen */
+    width: min(390px, 95vw);
+    border-radius: clamp(24px, 5vw, 44px);
+    min-height: 812px;
+    /* يبقى وسط الصفحة */
+    margin: 0 auto;
+  }
+  .top-label { display: block; }
+}
+
+/* تابلت 768px+ */
+@media (min-width: 768px) {
+  .phone {
+    width: min(420px, 55vw);
+  }
+}
+
+/* شاشة كبيرة 1200px+ */
+@media (min-width: 1200px) {
+  .phone {
+    width: 430px;
+  }
+}
+
+/* Mobile: full screen, no phone shell */
+@media (max-width: 479px) {
+  body {
+    padding: 0;
+    align-items: flex-start;
+    min-height: 100dvh;
+  }
+  .phone {
+    width: 100%;
+    border-radius: 0;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .top-label { display: none; }
+
+  /* الصفحات الداخلية تملأ الـ viewport كامل */
+  .inner-page, #mushafOverlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+  }
+
+  /* ورد */
+  #wirdPage { overflow: hidden !important; }
+  #wirdTrackerView {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  #wirdPageContent {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+  #wirdReaderView { flex: 1 1 0 !important; min-height: 0 !important; }
+
+  /* أذكار */
+  .azkar-reader-area { flex: 1 1 0 !important; min-height: 0 !important; overflow-y: auto !important; }
+  .dr-nav { flex-shrink: 0 !important; padding-bottom: max(10px, env(safe-area-inset-bottom, 10px)); }
+
+  /* مصحف */
+  #mushafReaderView { flex: 1 1 0 !important; min-height: 0 !important; }
+  .dr-body { flex: 1 1 0 !important; min-height: 0 !important; }
+}
+
 .phone {
   background: #ede9e0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-}
-
-@media (max-width: 519px) {
-  .phone { overflow-y: auto; overflow-x: hidden; }
 }
 
 button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle-pill {
@@ -1250,6 +1339,7 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   background: #000;
   position: relative;
   min-height: 0;
+  max-height: 100%;
   -webkit-overflow-scrolling: touch;
 }
 .dr-body::-webkit-scrollbar { width: 3px; }
@@ -1271,17 +1361,6 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
 #mushafReaderView {
   flex: 1;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Nav bar always pinned at bottom */
-.dr-nav {
-  flex-shrink: 0 !important;
-  position: relative;
-  z-index: 10;
-  padding-bottom: max(10px, env(safe-area-inset-bottom));
 }
 .dr-nav-btn {
   flex: 1;
@@ -1303,7 +1382,7 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
 
 /* ── نص الآيات — أبيض كبير على أسود ── */
 #ayahContainer {
-  padding: 16px 10px 30px 6px;
+  padding: 16px 18px 30px;
   direction: rtl;
 }
 .ayah-flow-text {
@@ -1331,27 +1410,6 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
   position: relative;
   top: -2px;
   background: rgba(212,175,55,0.08);
-}
-
-/* رقم الآية خارج خانة النص — على الشمال */
-.ayah-num-outside {
-  flex-shrink: 0;
-  width: 34px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 6px;
-  font-size: 11px;
-  font-weight: 800;
-  color: #d4af37;
-  background: rgba(212,175,55,0.08);
-  border: 1px solid rgba(212,175,55,0.22);
-  border-radius: 10px;
-  margin-right: 8px;
-  min-height: 32px;
-  line-height: 1.4;
-  text-align: center;
-  flex-direction: column;
 }
 
 /* ── هيدر السورة داخل الآيات ── */
@@ -1810,188 +1868,42 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
 /* ─── mushaf-overlay-header kept for legacy ─── */
 .mushaf-overlay-title { font-size: 17px; font-weight: 800; color: #fff; }
 
-/* ============================================================
-   FLUID RESPONSIVE SYSTEM — يتكيف مع أي جهاز تلقائياً
-   ============================================================ */
-
-/* ── CSS Variables — قيم متغيرة حسب حجم الشاشة ── */
-:root {
-  --space-xs:  clamp(4px,  1vw,  8px);
-  --space-sm:  clamp(6px,  1.5vw, 12px);
-  --space-md:  clamp(10px, 2.5vw, 18px);
-  --space-lg:  clamp(14px, 3.5vw, 24px);
-
-  --font-xs:   clamp(9px,  2.2vw, 11px);
-  --font-sm:   clamp(11px, 2.8vw, 13px);
-  --font-md:   clamp(13px, 3.5vw, 16px);
-  --font-lg:   clamp(16px, 4.5vw, 20px);
-  --font-xl:   clamp(20px, 6vw,   28px);
-  --font-2xl:  clamp(28px, 9vw,   48px);
-  --font-3xl:  clamp(36px, 13vw,  58px);
-
-  --radius-sm: clamp(10px, 2.5vw, 16px);
-  --radius-md: clamp(14px, 3.5vw, 22px);
-  --radius-lg: clamp(18px, 4.5vw, 28px);
-}
-
-/* ── Body & Phone ── */
-body {
-  background: #ede9e0;
+/* رقم الآية — دايرة ذهبية خارج النص على اليسار */
+.ayah-row-wrap {
   display: flex;
-  justify-content: center;
   align-items: flex-start;
-  min-height: 100dvh;
+  direction: rtl;
+  margin-bottom: 2px;
+}
+.ayah-row-text {
+  flex: 1;
   font-family: 'Cairo', sans-serif;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 2.2;
+  color: #fff;
+  text-align: right;
+  direction: rtl;
+  word-spacing: 4px;
 }
-
-/* Desktop — phone mockup */
-@media (min-width: 520px) {
-  body { background: #0d0d0d; padding: 20px 0; }
-  .phone { width: min(420px, 90vw); border-radius: 44px; min-height: 812px; }
-  .top-label { display: block; }
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-  .phone { width: min(440px, 55vw); }
-}
-
-/* Mobile — full screen */
-@media (max-width: 519px) {
-  body { padding: 0; align-items: flex-start; }
-  .phone {
-    width: 100%;
-    border-radius: 0;
-    min-height: 100dvh;
-    min-height: -webkit-fill-available;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  .top-label { display: none; }
-}
-
-/* ── Header card ── */
-.header-card {
-  margin: 0 clamp(6px, 2vw, 10px) clamp(6px, 1.5vw, 8px);
-  padding: clamp(10px, 3vw, 16px) clamp(12px, 4vw, 18px) clamp(12px, 3.5vw, 18px);
-  border-radius: var(--radius-lg);
-}
-.hijri-date { font-size: clamp(15px, 4.5vw, 26px); }
-#timeDigits { font-size: clamp(32px, 12vw, 58px) !important; }
-#timeAmPm   { font-size: clamp(12px, 4vw,  18px) !important; }
-
-/* Prayer row */
-.prayer-label    { font-size: clamp(8.5px, 2.3vw, 11px); }
-.prayer-time-val { font-size: clamp(9.5px, 2.6vw, 12px); }
-.prayer-icon-wrap { width: clamp(24px, 7vw, 30px); height: clamp(24px, 7vw, 30px); }
-.prayer-icon-wrap svg { width: clamp(20px, 6vw, 26px); height: clamp(20px, 6vw, 26px); }
-.prayer-col.next-prayer .prayer-icon-wrap { width: clamp(30px, 8vw, 36px); height: clamp(30px, 8vw, 36px); }
-.col-div { height: clamp(40px, 12vw, 54px); }
-.location-badge { font-size: clamp(10px, 2.5vw, 12.5px); padding: clamp(3px,1vw,5px) clamp(8px,2.5vw,12px); }
-
-/* ── Content card & Widgets ── */
-.content-card {
-  margin: 0 clamp(6px, 2vw, 10px) clamp(8px, 2vw, 14px);
-  padding: clamp(8px, 2.5vw, 14px) clamp(6px, 2vw, 12px);
-  border-radius: var(--radius-lg);
-  gap: clamp(8px, 2vw, 10px);
-}
-.widgets-grid { gap: clamp(8px, 2vw, 10px); }
-.widget {
-  padding: clamp(10px, 3vw, 14px) clamp(8px, 2.5vw, 12px) clamp(8px, 2vw, 12px);
-  border-radius: var(--radius-md);
-}
-.widget-icon  { width: clamp(26px,7vw,32px); height: clamp(26px,7vw,32px); }
-.widget-title { font-size: clamp(10px, 2.8vw, 12px); }
-.widget-value { font-size: clamp(16px, 5vw, 22px); }
-.widget-sub   { font-size: clamp(9px,  2.5vw, 10.5px); }
-.widget.countdown-widget .widget-value { font-size: clamp(18px, 6vw, 26px); }
-.widget.tasbih-widget    .widget-value { font-size: clamp(18px, 6vw, 26px); }
-.widget.azkar-widget .widget-value,
-.widget.azkar-masaa-widget .widget-value,
-.mushaf-widget .widget-value { font-size: clamp(11px, 3.2vw, 15px); }
-.next-prayer-name { font-size: clamp(9px, 2.5vw, 11px); }
-.tasbih-dua  { font-size: clamp(10px, 2.8vw, 11.5px); min-height: clamp(26px,7vw,32px); }
-.tasbih-btn  { font-size: clamp(12px, 3.5vw, 15px); padding: clamp(9px,2.5vw,12px); }
-
-/* ── Inner pages (fixed to viewport on mobile) ── */
-@media (max-width: 519px) {
-  .inner-page, #mushafOverlay {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100dvh !important;
-    border-radius: 0 !important;
-  }
-  #wirdTrackerView, #wirdReaderView {
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-  }
-  .azkar-reader-area, #wirdPageContent {
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-    overflow-y: auto !important;
-  }
-  .dr-body { flex: 1 1 0 !important; min-height: 0 !important; }
-  .dr-nav, .azkar-footer-bar { padding-bottom: max(10px, env(safe-area-inset-bottom, 10px)); }
-  #mushafReaderView { flex: 1 1 0 !important; min-height: 0 !important; }
-}
-
-/* ── Inner page headers & text — fluid ── */
-.azkar-page-header { padding: clamp(14px,4vw,20px) clamp(12px,4vw,18px) clamp(10px,3vw,16px); }
-.azkar-dhikr-text  { font-size: clamp(16px, 5vw, 20px); line-height: 2; }
-.azkar-tap-big     { padding: clamp(14px,4vw,18px) !important; font-size: clamp(15px,4.5vw,17px) !important; }
-
-/* ── Mushaf reader ── */
-.dr-header { padding: clamp(8px,2.5vw,10px) clamp(12px,3.5vw,14px) clamp(6px,2vw,8px); }
-.dr-surah-name { font-size: clamp(14px,4vw,17px); }
-.dr-nav { padding: clamp(8px,2.5vw,10px) clamp(12px,3.5vw,16px); padding-bottom: max(clamp(8px,2.5vw,10px), env(safe-area-inset-bottom,10px)); }
-.dr-nav-btn  { font-size: clamp(13px,4vw,16px); padding: clamp(9px,2.5vw,11px) 0; }
-.dr-nav-num  { font-size: clamp(13px,4vw,16px); }
-.mushaf-list-header { padding: clamp(12px,3.5vw,18px) clamp(12px,3.5vw,18px) clamp(10px,3vw,14px); }
-.mushaf-header-title { font-size: clamp(14px,4vw,17px); }
-
-/* ── Ayah text & number badge ── */
-.ayah-flow-text {
-  font-size: clamp(17px, 5.5vw, 26px);
-  line-height: clamp(2, 2.2, 2.4);
-  word-spacing: clamp(2px, 1vw, 4px);
-}
-#ayahContainer { padding: clamp(12px,3vw,16px) clamp(6px,1.5vw,10px) clamp(20px,5vw,30px) clamp(4px,1vw,6px); }
-
-/* رقم الآية خارج النص — يتكيف مع حجم الشاشة */
 .ayah-num-outside {
   flex-shrink: 0;
-  width: clamp(28px, 7vw, 36px);
-  min-height: clamp(28px, 7vw, 36px);
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(9px, 2.5vw, 12px);
+  font-size: 10px;
   font-weight: 800;
   color: #d4af37;
   background: rgba(212,175,55,0.1);
-  border: 1px solid rgba(212,175,55,0.28);
-  border-radius: clamp(6px, 1.8vw, 10px);
-  margin-right: clamp(6px, 1.8vw, 10px);
-  margin-top: clamp(4px, 1vw, 7px);
+  border: 1.5px solid rgba(212,175,55,0.35);
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-top: 14px;
   align-self: flex-start;
-  line-height: 1;
+  flex-shrink: 0;
 }
-
-/* ── Surah list ── */
-.surah-item { padding: clamp(9px,2.5vw,12px) clamp(12px,3.5vw,18px) !important; }
-
-/* ── Wird page ── */
-.wird-big-number { font-size: clamp(42px,13vw,64px); }
-.wird-page-dot   { width: clamp(22px,6vw,28px); height: clamp(22px,6vw,28px); font-size: clamp(9px,2.5vw,10px); border-radius: clamp(5px,1.5vw,8px); }
-
-/* ── Ring wrap ── */
-.ring-wrap { bottom: clamp(6px,2vw,10px); left: clamp(6px,2vw,10px); }
-.ring-wrap svg { width: clamp(34px,10vw,44px); height: clamp(34px,10vw,44px); }
 
 </style>
 <body>
@@ -2201,7 +2113,7 @@ body {
 
     <!-- ══════════ READER VIEW ══════════ -->
     <!-- ══════════ READER VIEW ══════════ -->
-    <div id="mushafReaderView" style="display:none;flex-direction:column;height:100%;min-height:0;width:100%;background:#000;overflow:hidden;flex:1;">
+    <div id="mushafReaderView" style="display:none;flex-direction:column;height:100%;width:100%;background:#000;overflow:hidden;">
 
       <!-- ── ثابت فوق: اسم السورة + الجزء والحزب ── -->
       <div class="dr-header">
@@ -2258,10 +2170,10 @@ body {
   </style>
 
   <!-- ===== WIRD PAGE ===== -->
-  <div id="wirdPage" class="inner-page" style="display:none;flex-direction:column;overflow:hidden;background:linear-gradient(160deg,#1a0e00 0%,#3d2000 40%,#1a0e00 100%);">
+  <div id="wirdPage" class="inner-page" style="display:none;flex-direction:column;background:linear-gradient(160deg,#1a0e00 0%,#3d2000 40%,#1a0e00 100%);">
 
     <!-- WIRD VIEW: Tracker -->
-    <div id="wirdTrackerView" style="display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+    <div id="wirdTrackerView" style="display:flex;flex-direction:column;height:100%;">
       <div style="background:linear-gradient(135deg,#6b3a00 0%,#b86a00 60%,#d4820a 100%);box-shadow:0 4px 24px rgba(184,106,0,0.4);flex-shrink:0;padding:20px 18px 16px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;">
         <!-- shimmer particles -->
         <div style="position:absolute;inset:0;pointer-events:none;">
@@ -2279,7 +2191,7 @@ body {
       <div style="height:3px;background:rgba(255,255,255,0.08);flex-shrink:0;">
         <div id="wirdProgressBar" style="height:100%;background:linear-gradient(90deg,#f59e0b,#fcd34d,#f59e0b);background-size:200%;animation:shimmer 3s linear infinite;transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);width:0%;"></div>
       </div>
-      <div style="flex:1;overflow-y:auto;overflow-x:hidden;direction:rtl;min-height:0;" id="wirdPageContent"></div>
+      <div style="flex:1;overflow-y:auto;direction:rtl;" id="wirdPageContent"></div>
     </div>
 
     <!-- WIRD VIEW: Quran Image Reader (embedded) -->
@@ -3656,16 +3568,13 @@ function renderAyahText(verses, surah, savedAyah) {
     html += `<div class="basmala-block" style="animation:fadeIn 0.6s 0.15s ease both;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
   }
 
-  // Flowing ayah text — each ayah in its own row with number OUTSIDE the text block
+
+  // كل آية في صف — الرقم دايرة ذهبية على اليسار خارج النص
   let flowHtml = '';
   verses.forEach(v => {
-    flowHtml += `
-    <div class="ayah-row-wrap" id="ayah-${v.num}" data-ayah="${v.num}" style="display:flex;align-items:flex-start;gap:0;margin-bottom:6px;direction:rtl;">
-      <div class="ayah-flow-text" style="flex:1;margin:0;animation:none;">${v.text}</div>
-      <div class="ayah-num-outside">${toArNum(v.num)}</div>
-    </div>`;
+    flowHtml += `<div class="ayah-row-wrap" id="ayah-${v.num}" data-ayah="${v.num}"><div class="ayah-row-text">${v.text}</div><div class="ayah-num-outside">${toArNum(v.num)}</div></div>`;
   });
-  html += `<div style="animation:fadeIn 0.6s 0.25s ease both;padding:0;">${flowHtml}</div>`;
+  html += `<div style="animation:fadeIn 0.6s 0.25s ease both;">${flowHtml}</div>`;
 
   // End ornament
   html += `
@@ -3678,22 +3587,28 @@ function renderAyahText(verses, surah, savedAyah) {
   container.innerHTML = html;
   container.scrollTop = 0;
 
-  // Scroll tracking: update saved ayah + juz/hizb as user scrolls — track FIRST ayah visible at top
+  // Bookmark banner when resuming
+  if (savedAyah && savedAyah > 1) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:linear-gradient(135deg,rgba(184,134,11,0.18),rgba(184,134,11,0.08));border:1px solid rgba(184,134,11,0.35);border-radius:16px;padding:12px 16px;text-align:center;font-size:13px;font-weight:700;color:#b8860b;margin:0 0 16px 0;direction:rtl;animation:fadeIn 0.4s ease both;';
+    banner.innerHTML = `🔖 استأنف من الآية ${toArNum(savedAyah)}`;
+    container.insertBefore(banner, container.firstChild);
+  }
+
+  // Scroll tracking — أول آية ظاهرة في أعلى الشاشة يحدّث الجزء والحزب
   container.onscroll = null;
   container.onscroll = function() {
     const rows = container.querySelectorAll('.ayah-row-wrap');
-    let firstVisible = mushafCurrentAyah;
-    const containerTop = container.getBoundingClientRect().top;
+    const top = container.getBoundingClientRect().top;
+    let first = mushafCurrentAyah;
     for (let i = 0; i < rows.length; i++) {
-      const rect = rows[i].getBoundingClientRect();
-      // First row whose bottom is past the top of the container = first visible ayah
-      if (rect.bottom >= containerTop + 10) {
-        firstVisible = parseInt(rows[i].dataset.ayah);
+      if (rows[i].getBoundingClientRect().bottom >= top + 10) {
+        first = parseInt(rows[i].dataset.ayah);
         break;
       }
     }
-    if (firstVisible !== mushafCurrentAyah) {
-      mushafCurrentAyah = firstVisible;
+    if (first !== mushafCurrentAyah) {
+      mushafCurrentAyah = first;
       LS.set('mushafAyah', mushafCurrentAyah);
       updateWidgetDisplay();
       updateInfoBar(mushafCurrentSurah, mushafCurrentAyah);
@@ -3721,62 +3636,6 @@ function updateInfoBar(surahN, ayahN) {
   animateBadge(document.getElementById('infoBarJuz'),  toArNum(getJuz(g)));
   animateBadge(document.getElementById('infoBarHizb'), toArNum(getHizb(g)));
 }
-// ===== RESUME AYAH BADGE — بادج عائم خارج خانة المصحف =====
-function showResumeAyahBadge(ayahNum) {
-  // Remove any existing badge
-  const old = document.getElementById('resumeAyahBadge');
-  if (old) old.remove();
-
-  const readerView = document.getElementById('mushafReaderView');
-  if (!readerView) return;
-
-  const badge = document.createElement('div');
-  badge.id = 'resumeAyahBadge';
-  badge.innerHTML = `
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span style="font-size:16px;">🔖</span>
-      <div>
-        <div style="font-size:11px;color:rgba(212,175,55,0.7);font-weight:700;letter-spacing:0.5px;">استأنف من</div>
-        <div style="font-size:22px;font-weight:900;color:#f0cc55;line-height:1;text-shadow:0 0 12px rgba(212,175,55,0.5);">الآية ${toArNum(ayahNum)}</div>
-      </div>
-    </div>`;
-  badge.style.cssText = `
-    position: absolute;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: linear-gradient(135deg, rgba(20,40,20,0.97), rgba(30,60,30,0.97));
-    border: 1px solid rgba(212,175,55,0.4);
-    border-radius: 20px;
-    padding: 12px 20px;
-    z-index: 50;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.15);
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
-    pointer-events: none;
-    direction: rtl;
-    white-space: nowrap;
-  `;
-
-  readerView.appendChild(badge);
-
-  // Animate in
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      badge.style.opacity = '1';
-      badge.style.transform = 'translateX(-50%) translateY(0)';
-    });
-  });
-
-  // Fade out after 3 seconds
-  setTimeout(() => {
-    badge.style.opacity = '0';
-    badge.style.transform = 'translateX(-50%) translateY(-8px)';
-    setTimeout(() => badge.remove(), 350);
-  }, 3000);
-}
-
 function updateReaderPageInfo(surahN, pageN) {
   const s = allSurahs[surahN - 1];
   if (s) document.getElementById('readerSurahName').textContent = `سورة ${s.name}`;
@@ -3817,16 +3676,11 @@ async function openSurah(n) {
 
   if (verses) {
     renderAyahText(verses, n, savedAyah);
-    // Restore scroll position to saved ayah — align to TOP of container
+    // Restore scroll position to saved ayah
     if (savedAyah > 1) {
       setTimeout(() => {
         const el = document.getElementById('ayah-' + savedAyah);
-        if (el) {
-          el.scrollIntoView({ block: 'start', behavior: 'smooth' });
-          showResumeAyahBadge(savedAyah);
-          // Update juz/hizb for the resumed ayah
-          updateInfoBar(n, savedAyah);
-        }
+        if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }, 150);
     }
   } else {
