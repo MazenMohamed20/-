@@ -321,51 +321,16 @@ const LS = {
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; tap-highlight-color: transparent; }
 
-body {
-  background: #ede9e0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  font-family: 'Cairo', sans-serif;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Desktop: show phone mockup */
-@media (min-width: 480px) {
-  body {
-    background: #0d0d0d;
-    padding: 20px 0;
-  }
-  .phone {
-    width: 375px;
-    border-radius: 44px;
-    min-height: 812px;
-  }
-  .top-label { display: block; }
-}
-
-/* Mobile: full screen, no phone shell */
-@media (max-width: 479px) {
-  body {
-    padding: 0;
-  }
-  .phone {
-    width: 100%;
-    border-radius: 0;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-  }
-  .top-label { display: none; }
-}
-
 .phone {
   background: #ede9e0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+@media (max-width: 519px) {
+  .phone { overflow-y: auto; overflow-x: hidden; }
 }
 
 button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle-pill {
@@ -1845,280 +1810,188 @@ button, a, [onclick], .widget, .surah-item, .wird-page-dot, .tasbih-btn, .toggle
 /* ─── mushaf-overlay-header kept for legacy ─── */
 .mushaf-overlay-title { font-size: 17px; font-weight: 800; color: #fff; }
 
-/* ===== MOBILE RESPONSIVE FIXES ===== */
-@media (max-width: 479px) {
+/* ============================================================
+   FLUID RESPONSIVE SYSTEM — يتكيف مع أي جهاز تلقائياً
+   ============================================================ */
 
-  /* Make body scroll properly on mobile */
-  body {
-    align-items: flex-start;
-    min-height: 100dvh;
-  }
+/* ── CSS Variables — قيم متغيرة حسب حجم الشاشة ── */
+:root {
+  --space-xs:  clamp(4px,  1vw,  8px);
+  --space-sm:  clamp(6px,  1.5vw, 12px);
+  --space-md:  clamp(10px, 2.5vw, 18px);
+  --space-lg:  clamp(14px, 3.5vw, 24px);
 
+  --font-xs:   clamp(9px,  2.2vw, 11px);
+  --font-sm:   clamp(11px, 2.8vw, 13px);
+  --font-md:   clamp(13px, 3.5vw, 16px);
+  --font-lg:   clamp(16px, 4.5vw, 20px);
+  --font-xl:   clamp(20px, 6vw,   28px);
+  --font-2xl:  clamp(28px, 9vw,   48px);
+  --font-3xl:  clamp(36px, 13vw,  58px);
+
+  --radius-sm: clamp(10px, 2.5vw, 16px);
+  --radius-md: clamp(14px, 3.5vw, 22px);
+  --radius-lg: clamp(18px, 4.5vw, 28px);
+}
+
+/* ── Body & Phone ── */
+body {
+  background: #ede9e0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100dvh;
+  font-family: 'Cairo', sans-serif;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Desktop — phone mockup */
+@media (min-width: 520px) {
+  body { background: #0d0d0d; padding: 20px 0; }
+  .phone { width: min(420px, 90vw); border-radius: 44px; min-height: 812px; }
+  .top-label { display: block; }
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .phone { width: min(440px, 55vw); }
+}
+
+/* Mobile — full screen */
+@media (max-width: 519px) {
+  body { padding: 0; align-items: flex-start; }
   .phone {
     width: 100%;
+    border-radius: 0;
     min-height: 100dvh;
     min-height: -webkit-fill-available;
-    border-radius: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
   }
+  .top-label { display: none; }
+}
 
-  /* Header card — tighter on small screens */
-  .header-card {
-    margin: 0 6px 6px;
-    padding: 12px 14px 14px;
-    border-radius: 18px;
-  }
+/* ── Header card ── */
+.header-card {
+  margin: 0 clamp(6px, 2vw, 10px) clamp(6px, 1.5vw, 8px);
+  padding: clamp(10px, 3vw, 16px) clamp(12px, 4vw, 18px) clamp(12px, 3.5vw, 18px);
+  border-radius: var(--radius-lg);
+}
+.hijri-date { font-size: clamp(15px, 4.5vw, 26px); }
+#timeDigits { font-size: clamp(32px, 12vw, 58px) !important; }
+#timeAmPm   { font-size: clamp(12px, 4vw,  18px) !important; }
 
-  /* Hijri date — smaller */
-  .hijri-date {
-    font-size: clamp(16px, 5vw, 22px);
-    margin-bottom: 1px;
-  }
+/* Prayer row */
+.prayer-label    { font-size: clamp(8.5px, 2.3vw, 11px); }
+.prayer-time-val { font-size: clamp(9.5px, 2.6vw, 12px); }
+.prayer-icon-wrap { width: clamp(24px, 7vw, 30px); height: clamp(24px, 7vw, 30px); }
+.prayer-icon-wrap svg { width: clamp(20px, 6vw, 26px); height: clamp(20px, 6vw, 26px); }
+.prayer-col.next-prayer .prayer-icon-wrap { width: clamp(30px, 8vw, 36px); height: clamp(30px, 8vw, 36px); }
+.col-div { height: clamp(40px, 12vw, 54px); }
+.location-badge { font-size: clamp(10px, 2.5vw, 12.5px); padding: clamp(3px,1vw,5px) clamp(8px,2.5vw,12px); }
 
-  /* Clock — fluid size */
-  #timeDigits {
-    font-size: clamp(36px, 14vw, 54px) !important;
-    letter-spacing: -0.5px;
-  }
-  #timeAmPm {
-    font-size: clamp(13px, 4vw, 17px) !important;
-  }
-  .current-time {
-    margin-bottom: 10px;
-  }
+/* ── Content card & Widgets ── */
+.content-card {
+  margin: 0 clamp(6px, 2vw, 10px) clamp(8px, 2vw, 14px);
+  padding: clamp(8px, 2.5vw, 14px) clamp(6px, 2vw, 12px);
+  border-radius: var(--radius-lg);
+  gap: clamp(8px, 2vw, 10px);
+}
+.widgets-grid { gap: clamp(8px, 2vw, 10px); }
+.widget {
+  padding: clamp(10px, 3vw, 14px) clamp(8px, 2.5vw, 12px) clamp(8px, 2vw, 12px);
+  border-radius: var(--radius-md);
+}
+.widget-icon  { width: clamp(26px,7vw,32px); height: clamp(26px,7vw,32px); }
+.widget-title { font-size: clamp(10px, 2.8vw, 12px); }
+.widget-value { font-size: clamp(16px, 5vw, 22px); }
+.widget-sub   { font-size: clamp(9px,  2.5vw, 10.5px); }
+.widget.countdown-widget .widget-value { font-size: clamp(18px, 6vw, 26px); }
+.widget.tasbih-widget    .widget-value { font-size: clamp(18px, 6vw, 26px); }
+.widget.azkar-widget .widget-value,
+.widget.azkar-masaa-widget .widget-value,
+.mushaf-widget .widget-value { font-size: clamp(11px, 3.2vw, 15px); }
+.next-prayer-name { font-size: clamp(9px, 2.5vw, 11px); }
+.tasbih-dua  { font-size: clamp(10px, 2.8vw, 11.5px); min-height: clamp(26px,7vw,32px); }
+.tasbih-btn  { font-size: clamp(12px, 3.5vw, 15px); padding: clamp(9px,2.5vw,12px); }
 
-  /* Prayer row icons and labels — scale down */
-  .prayer-label {
-    font-size: clamp(9px, 2.5vw, 11px);
-  }
-  .prayer-time-val {
-    font-size: clamp(10px, 2.8vw, 12px);
-  }
-  .prayer-icon-wrap {
-    width: 26px;
-    height: 26px;
-  }
-  .prayer-icon-wrap svg {
-    width: 22px;
-    height: 22px;
-  }
-  .prayer-col.next-prayer .prayer-icon-wrap {
-    width: 32px;
-    height: 32px;
-  }
-  .col-div {
-    height: 46px;
-  }
-
-  /* Location badge */
-  .location-badge {
-    font-size: 11px;
-    padding: 4px 10px 4px 8px;
-    margin-bottom: 6px;
-  }
-
-  /* Content card */
-  .content-card {
-    margin: 0 6px 10px;
-    padding: 10px 8px;
-    border-radius: 18px;
-    gap: 8px;
-  }
-
-  /* Widgets grid — tighter */
-  .widgets-grid {
-    gap: 8px;
-  }
-
-  .widget {
-    padding: 12px 10px 10px;
-    border-radius: 14px;
-  }
-
-  .widget-icon {
-    width: 28px;
-    height: 28px;
-    margin-bottom: 4px;
-  }
-
-  .widget-title {
-    font-size: 11px;
-    margin-bottom: 3px;
-  }
-
-  .widget-value {
-    font-size: clamp(17px, 5.5vw, 22px);
-  }
-
-  .widget-sub {
-    font-size: 10px;
-  }
-
-  /* Countdown widget */
-  .widget.countdown-widget .widget-value {
-    font-size: clamp(20px, 6.5vw, 26px);
-  }
-  .next-prayer-name {
-    font-size: 10px;
-  }
-
-  /* Tasbih widget value */
-  .widget.tasbih-widget .widget-value {
-    font-size: clamp(20px, 6.5vw, 26px);
-  }
-
-  /* Azkar widget values */
-  .widget.azkar-widget .widget-value,
-  .widget.azkar-masaa-widget .widget-value,
-  .mushaf-widget .widget-value {
-    font-size: clamp(12px, 3.5vw, 15px);
-  }
-
-  /* Tasbih dua text */
-  .tasbih-dua {
-    font-size: 10.5px;
-    min-height: 28px;
-  }
-
-  .tasbih-btn {
-    font-size: 13px;
-    padding: 10px;
-    border-radius: 12px;
-  }
-
-  /* Inner pages — fixed to viewport so header + footer always visible */
-  .inner-page {
-    border-radius: 0;
+/* ── Inner pages (fixed to viewport on mobile) ── */
+@media (max-width: 519px) {
+  .inner-page, #mushafOverlay {
     position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    height: 100dvh !important;
-    width: 100vw !important;
-  }
-
-  /* Wird tracker and reader fill height properly */
-  #wirdTrackerView,
-  #wirdReaderView {
-    height: 100% !important;
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-  }
-
-  /* Azkar scrollable content areas */
-  .azkar-reader-area {
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-    overflow-y: auto !important;
-  }
-
-  /* Wird scrollable content */
-  #wirdPageContent {
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-    overflow-y: auto !important;
-  }
-
-  /* Bottom bars — account for iPhone home bar */
-  .azkar-footer-bar,
-  #wirdTrackerView > div:last-child,
-  #wirdReaderView > div:last-child {
-    padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
-  }
-  .azkar-page-header {
-    padding: 16px 14px 12px;
-  }
-  .azkar-text {
-    font-size: clamp(16px, 5.5vw, 20px);
-    line-height: 1.9;
-  }
-  .azkar-tap-big {
-    padding: 15px !important;
-    font-size: 16px !important;
-  }
-
-  /* Mushaf overlay — fixed to viewport so header + nav always visible */
-  #mushafOverlay {
-    border-radius: 0;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    height: 100dvh !important;
-    width: 100vw !important;
     inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
   }
-
-  /* Reader view — explicit flex column filling overlay */
-  #mushafReaderView {
+  #wirdTrackerView, #wirdReaderView {
     flex: 1 1 0 !important;
     min-height: 0 !important;
-    max-height: none !important;
+    overflow: hidden !important;
   }
-
-  /* Dr-body fills space between header and nav */
-  .dr-body {
+  .azkar-reader-area, #wirdPageContent {
     flex: 1 1 0 !important;
     min-height: 0 !important;
-    max-height: none !important;
+    overflow-y: auto !important;
   }
-
-  /* Nav bar always at bottom, account for iPhone home bar */
-  .dr-nav {
-    padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
-  }
-  .mushaf-list-header {
-    padding: 14px 14px 10px;
-  }
-  .mushaf-header-title {
-    font-size: 15px;
-  }
-  .ayah-flow-text {
-    font-size: clamp(18px, 6vw, 24px);
-    line-height: 2;
-  }
-
-  /* Wird page */
-  .wird-big-number {
-    font-size: clamp(48px, 15vw, 64px);
-  }
-  .wird-page-dot {
-    width: 24px;
-    height: 24px;
-    font-size: 9px;
-    border-radius: 6px;
-  }
-
-  /* Surah list items */
-  .surah-item {
-    padding: 10px 14px !important;
-  }
-
-  /* Ring wrap */
-  .ring-wrap { bottom: 8px; left: 8px; }
-  .ring-wrap svg { width: 38px; height: 38px; }
-
-  /* Mosque SVG — smaller on tiny screens */
-  .mosque-bg svg {
-    opacity: 0.85;
-  }
+  .dr-body { flex: 1 1 0 !important; min-height: 0 !important; }
+  .dr-nav, .azkar-footer-bar { padding-bottom: max(10px, env(safe-area-inset-bottom, 10px)); }
+  #mushafReaderView { flex: 1 1 0 !important; min-height: 0 !important; }
 }
 
-/* Extra small screens (< 360px) */
-@media (max-width: 359px) {
-  .hijri-date { font-size: 15px; }
-  #timeDigits { font-size: 32px !important; }
-  .prayer-label { font-size: 8.5px; }
-  .prayer-time-val { font-size: 9.5px; }
-  .header-card { padding: 10px 12px 12px; }
-  .widget { padding: 10px 8px 8px; }
-  .widget-value { font-size: 16px; }
-  .content-card { padding: 8px 6px; }
+/* ── Inner page headers & text — fluid ── */
+.azkar-page-header { padding: clamp(14px,4vw,20px) clamp(12px,4vw,18px) clamp(10px,3vw,16px); }
+.azkar-dhikr-text  { font-size: clamp(16px, 5vw, 20px); line-height: 2; }
+.azkar-tap-big     { padding: clamp(14px,4vw,18px) !important; font-size: clamp(15px,4.5vw,17px) !important; }
+
+/* ── Mushaf reader ── */
+.dr-header { padding: clamp(8px,2.5vw,10px) clamp(12px,3.5vw,14px) clamp(6px,2vw,8px); }
+.dr-surah-name { font-size: clamp(14px,4vw,17px); }
+.dr-nav { padding: clamp(8px,2.5vw,10px) clamp(12px,3.5vw,16px); padding-bottom: max(clamp(8px,2.5vw,10px), env(safe-area-inset-bottom,10px)); }
+.dr-nav-btn  { font-size: clamp(13px,4vw,16px); padding: clamp(9px,2.5vw,11px) 0; }
+.dr-nav-num  { font-size: clamp(13px,4vw,16px); }
+.mushaf-list-header { padding: clamp(12px,3.5vw,18px) clamp(12px,3.5vw,18px) clamp(10px,3vw,14px); }
+.mushaf-header-title { font-size: clamp(14px,4vw,17px); }
+
+/* ── Ayah text & number badge ── */
+.ayah-flow-text {
+  font-size: clamp(17px, 5.5vw, 26px);
+  line-height: clamp(2, 2.2, 2.4);
+  word-spacing: clamp(2px, 1vw, 4px);
 }
+#ayahContainer { padding: clamp(12px,3vw,16px) clamp(6px,1.5vw,10px) clamp(20px,5vw,30px) clamp(4px,1vw,6px); }
+
+/* رقم الآية خارج النص — يتكيف مع حجم الشاشة */
+.ayah-num-outside {
+  flex-shrink: 0;
+  width: clamp(28px, 7vw, 36px);
+  min-height: clamp(28px, 7vw, 36px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(9px, 2.5vw, 12px);
+  font-weight: 800;
+  color: #d4af37;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.28);
+  border-radius: clamp(6px, 1.8vw, 10px);
+  margin-right: clamp(6px, 1.8vw, 10px);
+  margin-top: clamp(4px, 1vw, 7px);
+  align-self: flex-start;
+  line-height: 1;
+}
+
+/* ── Surah list ── */
+.surah-item { padding: clamp(9px,2.5vw,12px) clamp(12px,3.5vw,18px) !important; }
+
+/* ── Wird page ── */
+.wird-big-number { font-size: clamp(42px,13vw,64px); }
+.wird-page-dot   { width: clamp(22px,6vw,28px); height: clamp(22px,6vw,28px); font-size: clamp(9px,2.5vw,10px); border-radius: clamp(5px,1.5vw,8px); }
+
+/* ── Ring wrap ── */
+.ring-wrap { bottom: clamp(6px,2vw,10px); left: clamp(6px,2vw,10px); }
+.ring-wrap svg { width: clamp(34px,10vw,44px); height: clamp(34px,10vw,44px); }
 
 </style>
 <body>
