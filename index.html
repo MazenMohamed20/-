@@ -3350,6 +3350,10 @@ function renderWirdContent(slideForward) {
   <div style="flex-shrink:0;padding:8px 14px 14px;background:linear-gradient(180deg,#f5f0e0,#ede8d5);display:flex;flex-direction:column;gap:6px;">
     ${infoBar}
     <div style="display:flex;gap:8px;">
+      ${wirdPages > 0 ? `<button class="azkar-next-btn" onclick="wirdGoBack()"
+        style="flex:0 0 auto;min-width:80px;background:linear-gradient(135deg,#5a3300,#3d2000,#5a3300);box-shadow:0 4px 16px rgba(90,51,0,0.35);">
+        → السابقة
+      </button>` : ''}
       <button class="azkar-next-btn" onclick="wirdAdvance()"
         style="flex:1;background:linear-gradient(135deg,#c97d10,#b86a00,#d4890a);box-shadow:0 6px 24px rgba(184,106,0,0.45);">
         ${isLast ? 'إتمام ✓' : 'التالية ←'}
@@ -3382,6 +3386,30 @@ function wirdAdvance() {
     LS.set('wirdPages', wirdPages);
     updateWirdWidget();
     renderWirdContent(true);
+  }
+}
+
+function wirdGoBack() {
+  if (wirdPages > 0) {
+    wirdPages--;
+    LS.set('wirdPages', wirdPages);
+    updateWirdWidget();
+    const contentEl = document.getElementById('wirdContent');
+    if (contentEl) {
+      contentEl.style.opacity = '0';
+      contentEl.style.transform = 'translateX(22px)';
+      contentEl.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+      setTimeout(() => {
+        renderWirdContent(false);
+        contentEl.style.transition = 'opacity 0.28s ease, transform 0.28s cubic-bezier(0.22,1,0.36,1)';
+        contentEl.style.opacity = '0';
+        contentEl.style.transform = 'translateX(-22px)';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          contentEl.style.opacity = '1';
+          contentEl.style.transform = 'translateX(0)';
+        }));
+      }, 180);
+    }
   }
 }
 
