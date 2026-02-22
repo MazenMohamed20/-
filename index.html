@@ -3350,10 +3350,10 @@ function renderWirdContent(slideForward) {
   <div style="flex-shrink:0;padding:8px 14px 14px;background:linear-gradient(180deg,#f5f0e0,#ede8d5);display:flex;flex-direction:column;gap:6px;">
     ${infoBar}
     <div style="display:flex;gap:8px;">
-      ${wirdPages > 0 ? `<button class="azkar-next-btn" onclick="wirdGoBack()"
-        style="flex:0 0 auto;min-width:80px;background:linear-gradient(135deg,#5a3300,#3d2000,#5a3300);box-shadow:0 4px 16px rgba(90,51,0,0.35);">
+      <button class="azkar-next-btn" onclick="wirdGoBack()"
+        style="flex:1;background:linear-gradient(135deg,#5a3300,#3d2000,#5a3300);box-shadow:0 4px 16px rgba(90,51,0,0.35);opacity:${wirdPages > 0 ? '1' : '0.35'};pointer-events:${wirdPages > 0 ? 'auto' : 'none'};">
         → السابقة
-      </button>` : ''}
+      </button>
       <button class="azkar-next-btn" onclick="wirdAdvance()"
         style="flex:1;background:linear-gradient(135deg,#c97d10,#b86a00,#d4890a);box-shadow:0 6px 24px rgba(184,106,0,0.45);">
         ${isLast ? 'إتمام ✓' : 'التالية ←'}
